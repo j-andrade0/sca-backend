@@ -1,0 +1,35 @@
+import { DataTypes } from 'sequelize';
+import db from '../config/dbConnect.js';
+
+const Usuario = db.define(
+	'Usuario',
+	{
+		id: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			autoIncrement: true,
+			primaryKey: true
+		},
+		usuario: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+		senha: {
+			type: DataTypes.STRING(50),
+			allowNull: false
+		},
+		nivel_acesso: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		flag: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false
+		}
+	},
+	{
+		tableName: 'Usuarios'
+	}
+);
+
+export default Usuario;
