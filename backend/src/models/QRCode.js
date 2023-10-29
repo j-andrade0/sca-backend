@@ -16,7 +16,7 @@ const QRCode = db.define(
 		}
 	},
 	{
-		tableName: 'QrCodes'
+		tableName: 'qrcode'
 	}
 );
 

@@ -88,7 +88,7 @@ const RegistroAcesso = db.define(
 		}
 	},
 	{
-		tableName: 'RegistroAcessos'
+		tableName: 'registro_acesso'
 	}
 );
 

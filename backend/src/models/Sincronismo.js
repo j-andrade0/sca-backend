@@ -28,7 +28,7 @@ const Sincronismo = db.define(
 		}
 	},
 	{
-		tableName: 'Sincronismos'
+		tableName: 'sincronismo'
 	}
 );
 

@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/dbConnect.js';
 
-const Usuario = db.define(
-	'Usuario',
+const Unidade = db.define(
+	'Unidade',
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -10,26 +10,23 @@ const Usuario = db.define(
 			autoIncrement: true,
 			primaryKey: true
 		},
-		usuario: {
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
-		senha: {
+		nome: {
 			type: DataTypes.STRING(50),
 			allowNull: false
 		},
-		nivel_acesso: {
-			type: DataTypes.INTEGER,
+		ativo_unidade: {
+			type: DataTypes.BOOLEAN,
 			allowNull: false
 		},
-		flag: {
-			type: DataTypes.BOOLEAN,
+
+		sinc: {
+			type: DataTypes.BIGINT,
 			allowNull: false
 		}
 	},
 	{
-		tableName: 'usuario'
+		tableName: 'unidade'
 	}
 );
 
-export default Usuario;
+export default Unidade;
