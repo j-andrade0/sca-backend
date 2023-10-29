@@ -13,9 +13,7 @@ const Depentende = db.define(
 		id_efetivo: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'efetivo'
-				},
+				model: 'efetivo',
 				key: 'id'
 			},
 			allowNull: false

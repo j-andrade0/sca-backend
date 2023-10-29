@@ -28,7 +28,7 @@ const Alerta = db.define(
 		}
 	},
 	{
-		tableName: 'graduacao'
+		tableName: 'alerta'
 	}
 );
 

@@ -13,9 +13,7 @@ const Veiculo = db.define(
 		id_efetivo: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'efetivo'
-				},
+				model: 'efetivo',
 				key: 'id'
 			},
 			allowNull: true
@@ -23,9 +21,7 @@ const Veiculo = db.define(
 		id_visitante: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'visitante'
-				},
+				model: 'visitante',
 				key: 'id'
 			},
 			allowNull: true
@@ -53,19 +49,15 @@ const Veiculo = db.define(
 		qrcode: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'qrcode'
-				},
+				model: 'qrcode',
 				key: 'qrcode'
 			},
 			allowNull: true
 		},
-
 		ativo_veiculo: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false
 		},
-
 		sinc_veiculo: {
 			type: DataTypes.BIGINT,
 			allowNull: true

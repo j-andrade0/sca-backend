@@ -10,7 +10,6 @@ const RegistroAcesso = db.define(
 			autoIncrement: true,
 			primaryKey: true
 		},
-
 		tipo: {
 			type: DataTypes.STRING(20),
 			allowNull: false
@@ -25,13 +24,10 @@ const RegistroAcesso = db.define(
 			allowNull: false,
 			defaultValue: DataTypes.NOW
 		},
-
 		id_posto: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'posto'
-				},
+				model: 'posto',
 				key: 'id'
 			},
 			allowNull: false
@@ -40,9 +36,7 @@ const RegistroAcesso = db.define(
 		qrcode: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'qrcode'
-				},
+				model: 'qrcode',
 				key: 'qrcode'
 			},
 			allowNull: false
@@ -50,9 +44,7 @@ const RegistroAcesso = db.define(
 		id_visitante: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'visitante'
-				},
+				model: 'visitante',
 				key: 'id'
 			},
 			allowNull: true
@@ -60,9 +52,7 @@ const RegistroAcesso = db.define(
 		id_dependente: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'dependente'
-				},
+				model: 'dependente',
 				key: 'id'
 			},
 			allowNull: true
@@ -70,9 +60,7 @@ const RegistroAcesso = db.define(
 		id_veiculo: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'veiculo'
-				},
+				model: 'veiculo',
 				key: 'id'
 			},
 			allowNull: true

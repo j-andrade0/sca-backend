@@ -18,7 +18,6 @@ const Unidade = db.define(
 			type: DataTypes.BOOLEAN,
 			allowNull: false
 		},
-
 		sinc: {
 			type: DataTypes.BIGINT,
 			allowNull: false

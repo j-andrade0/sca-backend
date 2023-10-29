@@ -13,9 +13,7 @@ const Efetivo = db.define(
 		id_graduacao: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'graduacao'
-				},
+				model: 'graduacao',
 				key: 'id'
 			},
 			allowNull: true
@@ -39,9 +37,7 @@ const Efetivo = db.define(
 		id_alerta: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'alerta'
-				},
+				model: 'alerta',
 				key: 'id'
 			},
 			allowNull: false
@@ -49,9 +45,7 @@ const Efetivo = db.define(
 		id_unidade: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'unidade'
-				},
+				model: 'unidade',
 				key: 'id'
 			},
 			allowNull: false
@@ -59,14 +53,11 @@ const Efetivo = db.define(
 		qrcode_efetivo: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: {
-					tableName: 'qrcode'
-				},
+				model: 'qrcode',
 				key: 'qrcode'
 			},
 			allowNull: false
 		},
-
 		email: {
 			type: DataTypes.STRING(40),
 			allowNull: false
