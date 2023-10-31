@@ -23,9 +23,15 @@ npm install
 ```
 
 ## Running the server
+### Development
 ```sh
 cd backend/
-npm start
+npm run dev
+```
+### Production
+```sh
+cd backend/
+npm run start
 ```
 
 ## How to access Swagger documentation
