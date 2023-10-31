@@ -6,7 +6,7 @@ import Depentende from './models/Dependente.js';
 import Efetivo from './models/Efetivo.js';
 import Graduacao from './models/Graduacao.js';
 import Posto from './models/Posto.js';
-import QRCode from './models/QrCode.js';
+import QRCode from './models/QRCode.js';
 import Sincronismo from './models/Sincronismo.js';
 import Unidade from './models/Unidade.js';
 import Veiculo from './models/Veiculo.js';
