@@ -1,7 +1,7 @@
 import swaggerAutogen from 'swagger-autogen';
 
 const outputFile = './swagger_output.json';
-const endpointsFile = [];
+const endpointsFile = ['../src/routes/usuarioRoutes.js'];
 
 const doc = {
 	info: {
