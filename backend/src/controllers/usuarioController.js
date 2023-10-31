@@ -64,7 +64,7 @@ class UserController {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
 			}
 
-			const jwtToken = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+			const jwtToken = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
 			return res.status(200).json({ jwtToken });
 		} catch (error) {
 			res.status(500).json({ error: error.message });
