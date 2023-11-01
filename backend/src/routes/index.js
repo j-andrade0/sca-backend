@@ -1,12 +1,33 @@
-import express, { json } from 'express';
+import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from '../../swagger/swagger_output.json' assert { type: 'json' };
-import users from './usuarioRoutes.js';
+import usuarios from './usuarioRoutes.js';
+import efetivos from './efetivoRoutes.js';
+import graduacoes from './graduacaoRoutes.js';
+import postos from './postoRoutes.js';
+import qrcodes from './qrcodeRoutes.js';
+import registroAcessos from './registroAcessoRoutes.js';
+import sincronismos from './sincronismoRoutes.js';
+import unidades from './unidadeRoutes.js';
+import veiculos from './veiculoRoutes.js';
+import visitantes from './visitanteRoutes.js';
 
 
 const routes = (app) => {
 	app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-	app.use(express.json(), users);
+
+	app.use(express.json());
+
+	app.use('/', usuarios);
+	app.use('/', efetivos);
+	app.use('/', graduacoes);
+	app.use('/', postos);
+	app.use('/', qrcodes);
+	app.use('/', registroAcessos);
+	app.use('/', sincronismos);
+	app.use('/', unidades);
+	app.use('/', veiculos);
+	app.use('/', visitantes);
 };
 
 export default routes;
