@@ -62,6 +62,10 @@ const Efetivo = db.define(
 			type: DataTypes.STRING(40),
 			allowNull: false
 		},
+		senha: {
+			type: DataTypes.STRING(64),
+			allowNull: false
+		},
 		ativo_efetivo: {
 			type: DataTypes.BOOLEAN
 		},

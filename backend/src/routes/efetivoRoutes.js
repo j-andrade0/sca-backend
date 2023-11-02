@@ -16,6 +16,10 @@ router.post('/efetivo', authorizationMiddleware, EfetivoController.createEntity,
   /* #swagger.tags = ['Efetivo'] */
 });
 
+router.post('/efetivoLogin', EfetivoController.login, () => {
+	/* #swagger.tags = ['Efetivo'] */
+});
+
 router.put('/efetivo/:id', authorizationMiddleware, EfetivoController.updateEntity, () => {
   /* #swagger.tags = ['Efetivo'] */
 });

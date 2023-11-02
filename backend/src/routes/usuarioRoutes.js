@@ -1,6 +1,6 @@
 import express from 'express';
 import UsuarioController from '../controllers/usuarioController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js'
+import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
 
 const router = express.Router();
 
@@ -18,14 +18,14 @@ router.post('/usuario', UsuarioController.createEntity, () => {
 
 router.patch('/usuario/:id', UsuarioController.updateEntity, () => {
 	/* #swagger.tags = ['User']*/
-})
+});
 
 router.post('/usuarioLogin', UsuarioController.login, () => {
 	/* #swagger.tags = ['User'] */
 });
 
 router.delete('/usuario/:id', authorizationMiddleware, UsuarioController.deleteEntity, () => {
-/* #swagger.tags = ['User']*/
+	/* #swagger.tags = ['User']*/
 });
 
 export default router;
