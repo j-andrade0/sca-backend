@@ -11,6 +11,7 @@ import sincronismos from './sincronismoRoutes.js';
 import unidades from './unidadeRoutes.js';
 import veiculos from './veiculoRoutes.js';
 import visitantes from './visitanteRoutes.js';
+import dependentes from './dependenteRoutes.js';
 
 
 const routes = (app) => {
@@ -28,6 +29,7 @@ const routes = (app) => {
 	app.use('/', unidades);
 	app.use('/', veiculos);
 	app.use('/', visitantes);
+	app.use('/', dependentes)
 };
 
 export default routes;
