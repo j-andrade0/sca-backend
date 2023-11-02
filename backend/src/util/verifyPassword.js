@@ -2,7 +2,12 @@ import NoEntityError from './customErrors/NoEntityError.js';
 import bcrypt from 'bcrypt';
 
 async function verifyPassword(EntityModel, usuario, senha) {
-	const entity = await EntityModel.findOne({ where: { usuario } });
+	let entity;
+	if ( typeof usuario == 'number') {
+		entity = await EntityModel.findOne({ where: { usuario } });
+	} else {
+		entity = await EntityModel.findOne({ where: { email: usuario } });
+	}
 
 	if (!entity) {
 		throw new NoEntityError('Entidade não cadastrada!');

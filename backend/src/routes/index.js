@@ -12,7 +12,7 @@ import unidades from './unidadeRoutes.js';
 import veiculos from './veiculoRoutes.js';
 import visitantes from './visitanteRoutes.js';
 import dependentes from './dependenteRoutes.js';
-
+import alerta from './alertaRoutes.js'
 
 const routes = (app) => {
 	app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -30,6 +30,7 @@ const routes = (app) => {
 	app.use('/', veiculos);
 	app.use('/', visitantes);
 	app.use('/', dependentes)
+	app.use('/', alerta)
 };
 
 export default routes;
