@@ -2,6 +2,7 @@ import Entity from '../models/Efetivo.js';
 import verifyPassword from '../util/verifyPassword.js'
 import bcrypt from 'bcrypt';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
+import jwt from 'jsonwebtoken';
 
 class EfetivoController {
 	static getAllEntities = async (req, res) => {
@@ -120,13 +121,15 @@ class EfetivoController {
 	static login = async (req, res) => {
 		const { email, senha } = req.body;
 		try {
-			const isPasswordValid = await verifyPassword(Entity, email, senha);
+			const entity = await Entity.findOne({ where: { email } });
+
+			const isPasswordValid = await verifyPassword(entity, senha);
 
 			if (!isPasswordValid) {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
 			}
 
-			const jwtToken = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
 			return res.status(200).json({ jwtToken });
 		} catch (error) {
 			if (error instanceof NoEntityError) {

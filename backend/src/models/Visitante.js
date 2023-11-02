@@ -10,6 +10,15 @@ const Visitante = db.define(
 			autoIncrement: true,
 			primaryKey: true
 		},
+		email: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
+		},
+		senha: {
+			type: DataTypes.STRING(64),
+			allowNull: false
+		},
 		tipo_doc: {
 			type: DataTypes.STRING(30),
 			allowNull: false
