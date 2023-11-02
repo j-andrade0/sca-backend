@@ -1,6 +1,8 @@
 import Entity from '../models/Usuario.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import verifyPassword from '../util/verifyPassword.js';
+import NoEntityError from '../util/customErrors/NoEntityError.js'
 
 class UserController {
 	static getAllEntities = async (req, res) => {
@@ -50,15 +52,39 @@ class UserController {
 		}
 	};
 
+	static updateEntity = async (req, res) => {
+		try {
+			const { usuario, senha, nivel_acesso, flag } = req.body;
+			const senhaHashed = await bcrypt.hash(senha, 10);
+
+			const entityId = req.params.id;
+
+			const [updatedRows] = await Entity.update(
+				{
+					usuario,
+					senhaHashed,
+					nivel_acesso,
+					flag
+				},
+				{ where: { id: entityId } }
+			);
+
+			if (updatedRows > 0) {
+				res.status(200).send({ message: 'Entity updated successfully' });
+			} else {
+				res.status(400).send({
+					message: `Id ${entityId} not found!`
+				});
+			}
+		} catch (error) {
+			res.status(500).send({ message: `${error.message}` });
+		}
+	};
+
 	static login = async (req, res) => {
 		const { usuario, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { usuario } });
-			if (!entity) {
-				return res.status(400).send({ mensagem: 'Usuario não encontrado!' });
-			}
-
-			const isPasswordValid = await bcrypt.compare(senha, entity.senha);
+			const isPasswordValid = await verifyPassword(Entity, usuario, senha)
 
 			if (!isPasswordValid) {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
@@ -67,6 +93,9 @@ class UserController {
 			const jwtToken = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
 			return res.status(200).json({ jwtToken });
 		} catch (error) {
+			if (error instanceof NoEntityError) {
+				return res.status(400).send({ mensagem: 'Usuario não encontrado!' });
+			}
 			res.status(500).json({ error: error.message });
 		}
 	};

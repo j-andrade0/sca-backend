@@ -16,6 +16,10 @@ router.post('/usuario', UsuarioController.createEntity, () => {
 	/* #swagger.tags = ['User']*/
 });
 
+router.patch('/usuario/:id', UsuarioController.updateEntity, () => {
+	/* #swagger.tags = ['User']*/
+})
+
 router.post('/usuarioLogin', UsuarioController.login, () => {
 	/* #swagger.tags = ['User'] */
 });
