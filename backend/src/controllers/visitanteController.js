@@ -85,7 +85,7 @@ class VisitanteController {
 		try {
             const entity = await Entity.findOne({ where: { email } });
 
-			const isPasswordValid = await verifyPassword(Entity, entity, senha);
+			const isPasswordValid = await verifyPassword(entity, senha);
 
 			if (!isPasswordValid) {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
