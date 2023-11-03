@@ -5,27 +5,27 @@ import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
 const router = express.Router();
 
 router.get('/usuario', authorizationMiddleware, UsuarioController.getAllEntities, () => {
-	/* #swagger.tags = ['User']*/
+	/* #swagger.tags = ['Usuario']*/
 });
 
 router.get('/usuario/:id', authorizationMiddleware, UsuarioController.getEntityById, () => {
-	/* #swagger.tags = ['User']*/
+	/* #swagger.tags = ['Usuario']*/
 });
 
 router.post('/usuario', UsuarioController.createEntity, () => {
-	/* #swagger.tags = ['User']*/
+	/* #swagger.tags = ['Usuario']*/
 });
 
-router.patch('/usuario/:id', UsuarioController.updateEntity, () => {
-	/* #swagger.tags = ['User']*/
+router.put('/usuario/:id', UsuarioController.updateEntity, () => {
+	/* #swagger.tags = ['Usuario']*/
 });
 
 router.post('/usuarioLogin', UsuarioController.login, () => {
-	/* #swagger.tags = ['User'] */
+	/* #swagger.tags = ['Usuario'] */
 });
 
 router.delete('/usuario/:id', authorizationMiddleware, UsuarioController.deleteEntity, () => {
-	/* #swagger.tags = ['User']*/
+	/* #swagger.tags = ['Usuario']*/
 });
 
 export default router;
