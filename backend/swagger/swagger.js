@@ -11,7 +11,9 @@ const endpointsFile = [
   '../src/routes/sincronismoRoutes.js',
   '../src/routes/unidadeRoutes.js',
   '../src/routes/veiculoRoutes.js',
-  '../src/routes/visitanteRoutes.js'
+  '../src/routes/visitanteRoutes.js',
+  '../src/routes/alertaRoutes.js',
+  '../src/routes/dependenteRoutes.js'
 ];
 
 const doc = {
