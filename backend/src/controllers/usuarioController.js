@@ -2,7 +2,7 @@ import Entity from '../models/Usuario.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import verifyPassword from '../util/verifyPassword.js';
-import NoEntityError from '../util/customErrors/NoEntityError.js'
+import NoEntityError from '../util/customErrors/NoEntityError.js';
 
 class UserController {
 	static getAllEntities = async (req, res) => {
@@ -93,7 +93,9 @@ class UserController {
 			}
 
 			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
-			return res.status(200).json({ jwtToken });
+			delete entity.dataValues.senha;
+			
+			return res.status(200).send({ jwtToken, entity });
 		} catch (error) {
 			if (error instanceof NoEntityError) {
 				return res.status(400).send({ mensagem: 'Usuario não encontrado!' });

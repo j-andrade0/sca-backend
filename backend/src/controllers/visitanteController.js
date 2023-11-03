@@ -83,7 +83,7 @@ class VisitanteController {
 	static login = async (req, res) => {
 		const { email, senha } = req.body;
 		try {
-            const entity = await Entity.findOne({ where: { email } });
+			const entity = await Entity.findOne({ where: { email } });
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 
@@ -92,7 +92,9 @@ class VisitanteController {
 			}
 
 			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
-			return res.status(200).json({ jwtToken });
+            delete entity.dataValues.senha;
+
+			return res.status(200).send({ jwtToken, entity });
 		} catch (error) {
 			if (error instanceof NoEntityError) {
 				return res.status(400).send({ mensagem: 'Entidade não encontrada!' });
@@ -105,8 +107,8 @@ class VisitanteController {
 		try {
 			const { id } = req.params;
 			const {
-                email,
-                senha,
+				email,
+				senha,
 				tipo_doc,
 				num_doc,
 				nome,
@@ -127,8 +129,8 @@ class VisitanteController {
 
 			const [updatedRows] = await Entity.update(
 				{
-                    email,
-                    senha: senhaHashed,
+					email,
+					senha: senhaHashed,
 					tipo_doc,
 					num_doc,
 					nome,

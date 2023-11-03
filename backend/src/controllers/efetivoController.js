@@ -1,5 +1,5 @@
 import Entity from '../models/Efetivo.js';
-import verifyPassword from '../util/verifyPassword.js'
+import verifyPassword from '../util/verifyPassword.js';
 import bcrypt from 'bcrypt';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 import jwt from 'jsonwebtoken';
@@ -130,7 +130,9 @@ class EfetivoController {
 			}
 
 			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
-			return res.status(200).json({ jwtToken });
+			delete entity.dataValues.senha;
+
+			return res.status(200).send({ jwtToken, entity });
 		} catch (error) {
 			if (error instanceof NoEntityError) {
 				return res.status(400).send({ mensagem: 'Entidade não encontrada!' });
