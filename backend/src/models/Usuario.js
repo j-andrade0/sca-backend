@@ -12,7 +12,8 @@ const Usuario = db.define(
 		},
 		usuario: {
 			type: DataTypes.INTEGER,
-			allowNull: true
+			allowNull: true,
+			unique: true
 		},
 		senha: {
 			type: DataTypes.STRING(64),
