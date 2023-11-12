@@ -1,7 +1,7 @@
 import jwtLib from 'jsonwebtoken';
 
 function verifyJwt(req, res, next) {
-	if (false) {     // trigger to desativate the middleware, must be removed
+	if (true) {     // trigger to desativate the middleware, must be removed
 		const jwt = req.header('Authorization');
 
 		if (!jwt) {

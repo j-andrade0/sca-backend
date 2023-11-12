@@ -1,26 +1,26 @@
 import express from 'express';
 import DependenteController from '../controllers/dependenteController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
+import authenticationMiddleware from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
-router.get('/dependente', authorizationMiddleware, DependenteController.getAllEntities, () => {
+router.get('/dependente', authenticationMiddleware, DependenteController.getAllEntities, () => {
   /* #swagger.tags = ['Dependente'] */
 });
 
-router.get('/dependente/:id', authorizationMiddleware, DependenteController.getEntityById, () => {
+router.get('/dependente/:id', authenticationMiddleware, DependenteController.getEntityById, () => {
   /* #swagger.tags = ['Dependente'] */
 });
 
-router.post('/dependente', authorizationMiddleware, DependenteController.createEntity, () => {
+router.post('/dependente', authenticationMiddleware, DependenteController.createEntity, () => {
   /* #swagger.tags = ['Dependente'] */
 });
 
-router.put('/dependente/:id', authorizationMiddleware, DependenteController.updateEntity, () => {
+router.put('/dependente/:id', authenticationMiddleware, DependenteController.updateEntity, () => {
   /* #swagger.tags = ['Dependente'] */
 });
 
-router.delete('/dependente/:id', authorizationMiddleware, DependenteController.deleteEntity, () => {
+router.delete('/dependente/:id', authenticationMiddleware, DependenteController.deleteEntity, () => {
   /* #swagger.tags = ['Dependente'] */
 });
 

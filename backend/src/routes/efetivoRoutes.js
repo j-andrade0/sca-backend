@@ -1,18 +1,18 @@
 import express from 'express';
 import EfetivoController from '../controllers/efetivoController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
+import authenticationMiddleware from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
-router.get('/efetivo', authorizationMiddleware, EfetivoController.getAllEntities, () => {
+router.get('/efetivo', authenticationMiddleware, EfetivoController.getAllEntities, () => {
   /* #swagger.tags = ['Efetivo'] */
 });
 
-router.get('/efetivo/:id', authorizationMiddleware, EfetivoController.getEntityById, () => {
+router.get('/efetivo/:id', authenticationMiddleware, EfetivoController.getEntityById, () => {
   /* #swagger.tags = ['Efetivo'] */
 });
 
-router.post('/efetivo', authorizationMiddleware, EfetivoController.createEntity, () => {
+router.post('/efetivo', authenticationMiddleware, EfetivoController.createEntity, () => {
   /* #swagger.tags = ['Efetivo'] */
 });
 
@@ -20,11 +20,11 @@ router.post('/efetivoLogin', EfetivoController.login, () => {
 	/* #swagger.tags = ['Efetivo'] */
 });
 
-router.put('/efetivo/:id', authorizationMiddleware, EfetivoController.updateEntity, () => {
+router.put('/efetivo/:id', authenticationMiddleware, EfetivoController.updateEntity, () => {
   /* #swagger.tags = ['Efetivo'] */
 });
 
-router.delete('/efetivo/:id', authorizationMiddleware, EfetivoController.deleteEntity, () => {
+router.delete('/efetivo/:id', authenticationMiddleware, EfetivoController.deleteEntity, () => {
   /* #swagger.tags = ['Efetivo'] */
 });
 

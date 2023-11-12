@@ -1,26 +1,26 @@
 import express from 'express';
 import VeiculoController from '../controllers/veiculoController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
+import authenticationMiddleware from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
-router.get('/veiculo', authorizationMiddleware, VeiculoController.getAllEntities, () => {
+router.get('/veiculo', authenticationMiddleware, VeiculoController.getAllEntities, () => {
   /* #swagger.tags = ['Veiculo'] */
 });
 
-router.get('/veiculo/:id', authorizationMiddleware, VeiculoController.getEntityById, () => {
+router.get('/veiculo/:id', authenticationMiddleware, VeiculoController.getEntityById, () => {
   /* #swagger.tags = ['Veiculo'] */
 });
 
-router.post('/veiculo', authorizationMiddleware, VeiculoController.createEntity, () => {
+router.post('/veiculo', authenticationMiddleware, VeiculoController.createEntity, () => {
   /* #swagger.tags = ['Veiculo'] */
 });
 
-router.put('/veiculo/:id', authorizationMiddleware, VeiculoController.updateEntity, () => {
+router.put('/veiculo/:id', authenticationMiddleware, VeiculoController.updateEntity, () => {
   /* #swagger.tags = ['Veiculo'] */
 });
 
-router.delete('/veiculo/:id', authorizationMiddleware, VeiculoController.deleteEntity, () => {
+router.delete('/veiculo/:id', authenticationMiddleware, VeiculoController.deleteEntity, () => {
   /* #swagger.tags = ['Veiculo'] */
 });
 

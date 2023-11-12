@@ -1,22 +1,22 @@
 import express from 'express';
 import UsuarioController from '../controllers/usuarioController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
+import authenticationMiddleware from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
-router.get('/usuario', authorizationMiddleware, UsuarioController.getAllEntities, () => {
+router.get('/usuario', authenticationMiddleware, UsuarioController.getAllEntities, () => {
 	/* #swagger.tags = ['Usuario']*/
 });
 
-router.get('/usuario/:id', authorizationMiddleware, UsuarioController.getEntityById, () => {
+router.get('/usuario/:id', authenticationMiddleware, UsuarioController.getEntityById, () => {
 	/* #swagger.tags = ['Usuario']*/
 });
 
-router.post('/usuario', UsuarioController.createEntity, () => {
+router.post('/usuario', authenticationMiddleware, UsuarioController.createEntity, () => {
 	/* #swagger.tags = ['Usuario']*/
 });
 
-router.put('/usuario/:id', UsuarioController.updateEntity, () => {
+router.put('/usuario/:id', authenticationMiddleware, UsuarioController.updateEntity, () => {
 	/* #swagger.tags = ['Usuario']*/
 });
 
@@ -24,7 +24,7 @@ router.post('/usuarioLogin', UsuarioController.login, () => {
 	/* #swagger.tags = ['Usuario'] */
 });
 
-router.delete('/usuario/:id', authorizationMiddleware, UsuarioController.deleteEntity, () => {
+router.delete('/usuario/:id', authenticationMiddleware, UsuarioController.deleteEntity, () => {
 	/* #swagger.tags = ['Usuario']*/
 });
 

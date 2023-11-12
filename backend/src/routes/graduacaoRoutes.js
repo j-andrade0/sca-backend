@@ -1,26 +1,26 @@
 import express from 'express';
 import GraduacaoController from '../controllers/graduacaoController.js';
-import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
+import authenticationMiddleware from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
-router.get('/graduacao', authorizationMiddleware, GraduacaoController.getAllEntities, () => {
+router.get('/graduacao', authenticationMiddleware, GraduacaoController.getAllEntities, () => {
   /* #swagger.tags = ['Graduacao'] */
 });
 
-router.get('/graduacao/:id', authorizationMiddleware, GraduacaoController.getEntityById, () => {
+router.get('/graduacao/:id', authenticationMiddleware, GraduacaoController.getEntityById, () => {
   /* #swagger.tags = ['Graduacao'] */
 });
 
-router.post('/graduacao', authorizationMiddleware, GraduacaoController.createEntity, () => {
+router.post('/graduacao', authenticationMiddleware, GraduacaoController.createEntity, () => {
   /* #swagger.tags = ['Graduacao'] */
 });
 
-router.put('/graduacao/:id', authorizationMiddleware, GraduacaoController.updateEntity, () => {
+router.put('/graduacao/:id', authenticationMiddleware, GraduacaoController.updateEntity, () => {
   /* #swagger.tags = ['Graduacao'] */
 });
 
-router.delete('/graduacao/:id', authorizationMiddleware, GraduacaoController.deleteEntity, () => {
+router.delete('/graduacao/:id', authenticationMiddleware, GraduacaoController.deleteEntity, () => {
   /* #swagger.tags = ['Graduacao'] */
 });
 
