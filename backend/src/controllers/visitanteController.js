@@ -45,7 +45,7 @@ class VisitanteController {
 				foto,
 				empresa,
 				autorizador,
-				qr_code,
+				qrcode_visitante,
 				ativo_visitante,
 				sinc
 			} = req.body;
@@ -66,7 +66,7 @@ class VisitanteController {
 				foto,
 				empresa,
 				autorizador,
-				qr_code,
+				qrcode_visitante,
 				ativo_visitante,
 				sinc
 			});
