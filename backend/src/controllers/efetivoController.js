@@ -8,6 +8,11 @@ class EfetivoController {
 	static getAllEntities = async (req, res) => {
 		try {
 			const efetivos = await Entity.findAll();
+
+			efetivos.forEach((efetivo) => {
+				delete efetivo.dataValues.senha;
+			});
+
 			res.status(200).json(efetivos);
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
@@ -17,7 +22,9 @@ class EfetivoController {
 	static getEntityById = async (req, res) => {
 		try {
 			const entity = await Entity.findByPk(req.params.id);
+
 			if (entity) {
+				delete entity.dataValues.senha;
 				return res.status(200).json(entity);
 			} else {
 				return res.status(400).send({
@@ -62,6 +69,9 @@ class EfetivoController {
 				ativo_efetivo,
 				sinc_efetivo
 			});
+
+			delete createdEntity.dataValues.senha;
+
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
