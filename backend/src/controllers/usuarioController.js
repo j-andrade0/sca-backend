@@ -7,8 +7,13 @@ import NoEntityError from '../util/customErrors/NoEntityError.js';
 class UserController {
 	static getAllEntities = async (req, res) => {
 		try {
-			const users = await Entity.findAll();
-			res.status(200).json(users);
+			const usuarios = await Entity.findAll();
+
+			usuarios.forEach((usuario) => {
+				delete usuario.dataValues.senha;
+			});
+
+			res.status(200).json(usuarios);
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
 		}
@@ -17,7 +22,9 @@ class UserController {
 	static getEntityById = async (req, res) => {
 		try {
 			const entity = await Entity.findByPk(req.params.id);
+
 			if (entity) {
+				delete entity.dataValues.senha;
 				return res.status(200).json(entity);
 			} else {
 				return res.status(400).send({
@@ -40,6 +47,9 @@ class UserController {
 				nivel_acesso,
 				flag
 			});
+
+			delete createdEntity.dataValues.senha;
+
 			res.status(201).send({
 				usuario: createdEntity
 			});
@@ -93,6 +103,7 @@ class UserController {
 			}
 
 			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+
 			delete entity.dataValues.senha;
 			
 			return res.status(200).send({ jwtToken, entity });
