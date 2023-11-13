@@ -63,9 +63,13 @@ const Visitante = db.define(
 			type: DataTypes.STRING(45),
 			allowNull: true
 		},
-		qr_code: {
+		qrcode_visitante: {
 			type: DataTypes.INTEGER,
-			allowNull: true
+			references: {
+				model: 'qrcode',
+				key: 'qrcode'
+			},
+			allowNull: false
 		},
 		ativo_visitante: {
 			type: DataTypes.BOOLEAN,
