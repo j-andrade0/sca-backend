@@ -7,4 +7,4 @@ export JWT_SECRET_KEY="Xn1%tJ6O3K4%^6#rOr3npJ5cmel^48H11o7NnGy5SxY!8nUkzh!ZIOvl0
 export PORT=3000
 
 node ./swagger/swagger.js
-nodemon ./src/server.js
+npx nodemon ./src/server.js
