@@ -6,9 +6,31 @@ import jwt from 'jsonwebtoken';
 
 class VisitanteController {
 	static getAllEntities = async (req, res) => {
+		const { page = 1 } = req.query;
+		const limit = 10;
+		let lastPage = 1;
+		const countEntity = await Entity.count();
+
 		try {
-			const visitantes = await Entity.findAll();
-			res.status(200).json(visitantes);
+			const entities = await Entity.findAll({
+				order: [['id', 'ASC']],
+				offset: Number(page * limit - limit),
+				limit: limit
+			});
+
+			entities.forEach((entity) => {
+				delete entity.dataValues.senha;
+			});
+
+			const pagination = {
+				path: '/visitante',
+				page,
+				prev_page: page - 1 >= 1 ? page - 1 : false,
+				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
+				lastPage,
+				totalRegisters: countEntity
+			};
+			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
 		}
@@ -70,6 +92,9 @@ class VisitanteController {
 				ativo_visitante,
 				sinc
 			});
+
+			delete createdEntity.dataValues.senha;
+
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
@@ -92,7 +117,7 @@ class VisitanteController {
 			}
 
 			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
-            delete entity.dataValues.senha;
+			delete entity.dataValues.senha;
 
 			return res.status(200).send({ jwtToken, entity });
 		} catch (error) {

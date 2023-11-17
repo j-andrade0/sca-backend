@@ -6,14 +6,31 @@ import jwt from 'jsonwebtoken';
 
 class EfetivoController {
 	static getAllEntities = async (req, res) => {
-		try {
-			const efetivos = await Entity.findAll();
+		const { page = 1 } = req.query;
+		const limit = 10;
+		let lastPage = 1;
+		const countEntity = await Entity.count();
 
-			efetivos.forEach((efetivo) => {
-				delete efetivo.dataValues.senha;
+		try {
+			const entities = await Entity.findAll({
+				order: [['id', 'ASC']],
+				offset: Number(page * limit - limit),
+				limit: limit
 			});
 
-			res.status(200).json(efetivos);
+			entities.forEach((entity) => {
+				delete entity.dataValues.senha;
+			});
+
+			const pagination = {
+				path: '/efetivo',
+				page,
+				prev_page: page - 1 >= 1 ? page - 1 : false,
+				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
+				lastPage,
+				totalRegisters: countEntity
+			};
+			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
 		}
