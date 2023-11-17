@@ -1,23 +1,19 @@
 import jwtLib from 'jsonwebtoken';
 
 function verifyJwt(req, res, next) {
-	if (true) {     // trigger to desativate the middleware, must be removed
-		const jwt = req.header('Authorization');
+	const jwt = req.header('Authentication');
 
-		if (!jwt) {
-			return res.status(401).json({ message: 'Token nao fornecido!' });
-		}
+	if (!jwt) {
+		return res.status(401).json({ message: 'Token nao fornecido!' });
+	}
 
-		try {
-			jwtLib.verify(jwt, process.env.JWT_SECRET_KEY); // throws a JsonWebTokenError if it is not valid
-			return next();
-		} catch (error) {
-			if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-				return res.status(401).send({ unauthorized: `${error.message}` });
-			}
-		}
-	} else {
+	try {
+		jwtLib.verify(jwt, process.env.JWT_SECRET_KEY); // throws a JsonWebTokenError if it is not valid
 		return next();
+	} catch (error) {
+		if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+			return res.status(401).send({ unauthorized: `${error.message}` });
+		}
 	}
 }
 
