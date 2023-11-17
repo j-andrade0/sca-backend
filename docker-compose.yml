@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   sca:
-    image: 123pedrosilva123/sca-backend:1.0.0
+    image: 123pedrosilva123/sca-backend:1.1.0
     container_name: sca-backend
     environment:
       DB_NAME: sca
