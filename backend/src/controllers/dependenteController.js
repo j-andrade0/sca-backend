@@ -1,4 +1,5 @@
 import Entity from '../models/Dependente.js';
+import QRCode from '../models/QRCode.js';
 
 class DependenteController {
 	static getAllEntities = async (req, res) => {
@@ -46,22 +47,28 @@ class DependenteController {
 
 	static createEntity = async (req, res) => {
 		try {
-			const { id_efetivo, nome, parentesco, qrcode, ativo_dependente, sinc_dependente } = req.body;
+			const { id_efetivo, nome, parentesco, nivel_acesso, ativo_dependente, sinc_dependente } = req.body;
+			
+			var createdQRCode = await QRCode.create({
+				nivel_acesso
+			});
 
 			const createdEntity = await Entity.create({
 				id_efetivo,
 				nome,
 				parentesco,
-				qrcode,
+				qrcode: createdQRCode.qrcode,
 				ativo_dependente,
 				sinc_dependente
 			});
-			res.status(201).json(createdEntity);
+			return res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-				res.status(400).send({ message: 'Valores já cadastrados!' });
+				createdQRCode.destroy();
+				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				res.status(500).send({ message: `${error.message}` });
+				createdQRCode.destroy();
+				return res.status(500).send({ message: `${error.message}` });
 			}
 		}
 	};

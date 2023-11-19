@@ -3,6 +3,7 @@ import verifyPassword from '../util/verifyPassword.js';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import QRCode from '../models/QRCode.js';
 
 class VisitanteController {
 	static getAllEntities = async (req, res) => {
@@ -67,12 +68,16 @@ class VisitanteController {
 				foto,
 				empresa,
 				autorizador,
-				qrcode_visitante,
+				nivel_acesso,
 				ativo_visitante,
 				sinc
 			} = req.body;
 
 			const senhaHashed = await bcrypt.hash(senha, 10);
+
+			var createdQRCode = await QRCode.create({
+				nivel_acesso
+			})
 
 			const createdEntity = await Entity.create({
 				email,
@@ -88,7 +93,7 @@ class VisitanteController {
 				foto,
 				empresa,
 				autorizador,
-				qrcode_visitante,
+				qrcode_visitante: createdQRCode.qrcode,
 				ativo_visitante,
 				sinc
 			});
@@ -98,8 +103,10 @@ class VisitanteController {
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
+				createdQRCode.destroy();
 				res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
+				createdQRCode.destroy();
 				res.status(500).send({ message: `${error.message}` });
 			}
 		}

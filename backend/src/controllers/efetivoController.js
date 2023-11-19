@@ -3,6 +3,7 @@ import verifyPassword from '../util/verifyPassword.js';
 import bcrypt from 'bcrypt';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 import jwt from 'jsonwebtoken';
+import QRCode from '../models/QRCode.js';
 
 class EfetivoController {
 	static getAllEntities = async (req, res) => {
@@ -63,14 +64,18 @@ class EfetivoController {
 				dependente,
 				id_alerta,
 				id_unidade,
-				qrcode_efetivo,
 				email,
 				senha,
+				nivel_acesso,
 				ativo_efetivo,
 				sinc_efetivo
 			} = req.body;
 
 			const senhaHashed = await bcrypt.hash(senha, 10);
+
+			var createdQRCode = await QRCode.create({
+				nivel_acesso
+			});
 
 			const createdEntity = await Entity.create({
 				id_graduacao,
@@ -80,7 +85,7 @@ class EfetivoController {
 				dependente,
 				id_alerta,
 				id_unidade,
-				qrcode_efetivo,
+				qrcode_efetivo: createdQRCode.qrcode,
 				email,
 				senha: senhaHashed,
 				ativo_efetivo,
@@ -92,9 +97,11 @@ class EfetivoController {
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-				res.status(400).send({ message: 'Valores já cadastrados!' });
+				createdQRCode.destroy();
+				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				res.status(500).send({ message: `${error.message}` });
+				createdQRCode.destroy();
+				return res.status(500).send({ message: `${error.message}` });
 			}
 		}
 	};
