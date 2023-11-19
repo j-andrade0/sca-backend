@@ -31,7 +31,7 @@ class PostoController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await Posto.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -48,7 +48,7 @@ class PostoController {
 		try {
 			const { nome, nivel_acesso, ativo_posto, sinc_posto } = req.body;
 
-			const createdEntity = await Posto.create({
+			const createdEntity = await Entity.create({
 				nome,
 				nivel_acesso,
 				ativo_posto,
@@ -69,7 +69,7 @@ class PostoController {
 			const { nome, nivel_acesso, ativo_posto, sinc_posto } = req.body;
 			const entityId = req.params.id;
 
-			const [updatedRows] = await Posto.update(
+			const [updatedRows] = await Entity.update(
 				{
 					nome,
 					nivel_acesso,
@@ -93,7 +93,7 @@ class PostoController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await Posto.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

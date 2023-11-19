@@ -31,7 +31,7 @@ class VeiculoController {
 
   static getEntityById = async (req, res) => {
     try {
-      const entity = await Veiculo.findByPk(req.params.id);
+      const entity = await Entity.findByPk(req.params.id);
       if (entity) {
         return res.status(200).json(entity);
       } else {
@@ -59,7 +59,7 @@ class VeiculoController {
         sinc_veiculo
       } = req.body;
 
-      const createdEntity = await Veiculo.create({
+      const createdEntity = await Entity.create({
         id_efetivo,
         id_visitante,
         tipo,
@@ -97,7 +97,7 @@ class VeiculoController {
         sinc_veiculo
       } = req.body;
 
-      const [updatedRows] = await Veiculo.update(
+      const [updatedRows] = await Entity.update(
         {
           id_efetivo,
           id_visitante,
@@ -127,7 +127,7 @@ class VeiculoController {
 
   static deleteEntity = async (req, res) => {
     try {
-      const entity = await Veiculo.findByPk(req.params.id);
+      const entity = await Entity.findByPk(req.params.id);
       if (entity) {
         await entity.destroy();
         return res.status(204).send();

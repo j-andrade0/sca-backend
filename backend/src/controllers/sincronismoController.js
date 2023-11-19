@@ -30,7 +30,7 @@ class SincronismoController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await Sincronismo.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -47,7 +47,7 @@ class SincronismoController {
 		try {
 			const { sinc_pessoa_geral, sinc_posto_geral, sinc_dependente_geral, sinc_veiculo_geral } = req.body;
 
-			const createdEntity = await Sincronismo.create({
+			const createdEntity = await Entity.create({
 				sinc_pessoa_geral,
 				sinc_posto_geral,
 				sinc_dependente_geral,
@@ -68,7 +68,7 @@ class SincronismoController {
 			const { id } = req.params;
 			const { sinc_pessoa_geral, sinc_posto_geral, sinc_dependente_geral, sinc_veiculo_geral } = req.body;
 
-			const [updatedRows] = await Sincronismo.update(
+			const [updatedRows] = await Entity.update(
 				{
 					sinc_pessoa_geral,
 					sinc_posto_geral,
@@ -92,7 +92,7 @@ class SincronismoController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await Sincronismo.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

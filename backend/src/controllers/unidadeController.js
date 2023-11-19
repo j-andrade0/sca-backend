@@ -30,7 +30,7 @@ class UnidadeController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await Unidade.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -47,7 +47,7 @@ class UnidadeController {
 		try {
 			const { nome, ativo_unidade, sinc } = req.body;
 
-			const createdEntity = await Unidade.create({
+			const createdEntity = await Entity.create({
 				nome,
 				ativo_unidade,
 				sinc
@@ -67,7 +67,7 @@ class UnidadeController {
 			const { id } = req.params;
 			const { nome, ativo_unidade, sinc } = req.body;
 
-			const [updatedRows] = await Unidade.update(
+			const [updatedRows] = await Entity.update(
 				{
 					nome,
 					ativo_unidade,
@@ -90,7 +90,7 @@ class UnidadeController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await Unidade.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

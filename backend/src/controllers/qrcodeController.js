@@ -32,7 +32,7 @@ class QRCodeController {
 	static getEntityByQRCode = async (req, res) => {
 		const { qrcode } = req.params;
 		try {
-			const entity = await QRCode.findByPk(qrcode);
+			const entity = await Entity.findByPk(qrcode);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -49,7 +49,7 @@ class QRCodeController {
 		try {
 			const { nivel_acesso } = req.body;
 
-			const createdEntity = await QRCode.create({
+			const createdEntity = await Entity.create({
 				nivel_acesso
 			});
 			res.status(201).json(createdEntity);
@@ -67,7 +67,7 @@ class QRCodeController {
 		try {
 			const { nivel_acesso } = req.body;
 
-			const [updatedRows] = await QRCode.update(
+			const [updatedRows] = await Entity.update(
 				{
 					nivel_acesso
 				},
@@ -89,7 +89,7 @@ class QRCodeController {
 	static deleteEntity = async (req, res) => {
 		const { qrcode } = req.params;
 		try {
-			const entity = await QRCode.findByPk(qrcode);
+			const entity = await Entity.findByPk(qrcode);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

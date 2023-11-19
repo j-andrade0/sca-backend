@@ -31,7 +31,7 @@ class DependenteController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await Dependente.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -48,7 +48,7 @@ class DependenteController {
 		try {
 			const { id_efetivo, nome, parentesco, qrcode, ativo_dependente, sinc_dependente } = req.body;
 
-			const createdEntity = await Dependente.create({
+			const createdEntity = await Entity.create({
 				id_efetivo,
 				nome,
 				parentesco,
@@ -71,7 +71,7 @@ class DependenteController {
 			const { id_efetivo, nome, parentesco, qrcode, ativo_dependente, sinc_dependente } = req.body;
 			const entityId = req.params.id;
 
-			const [updatedRows] = await Dependente.update(
+			const [updatedRows] = await Entity.update(
 				{
 					id_efetivo,
 					nome,
@@ -97,7 +97,7 @@ class DependenteController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await Dependente.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

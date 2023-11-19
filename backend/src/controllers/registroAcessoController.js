@@ -30,7 +30,7 @@ class RegistroAcessoController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await RegistroAcesso.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -58,7 +58,7 @@ class RegistroAcessoController {
 				sinc_acesso
 			} = req.body;
 
-			const createdEntity = await RegistroAcesso.create({
+			const createdEntity = await Entity.create({
 				tipo,
 				data,
 				hora,
@@ -96,7 +96,7 @@ class RegistroAcessoController {
 				sinc_acesso
 			} = req.body;
 
-			const [updatedRows] = await RegistroAcesso.update(
+			const [updatedRows] = await Entity.update(
 				{
 					tipo,
 					data,
@@ -126,7 +126,7 @@ class RegistroAcessoController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await RegistroAcesso.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();

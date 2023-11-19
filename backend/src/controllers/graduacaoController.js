@@ -31,7 +31,7 @@ class GraduacaoController {
 
 	static getEntityById = async (req, res) => {
 		try {
-			const entity = await Graduacao.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				return res.status(200).json(entity);
 			} else {
@@ -48,7 +48,7 @@ class GraduacaoController {
 		try {
 			const { sigla, descricao, ordem } = req.body;
 
-			const createdEntity = await Graduacao.create({
+			const createdEntity = await Entity.create({
 				sigla,
 				descricao,
 				ordem
@@ -68,7 +68,7 @@ class GraduacaoController {
 			const { sigla, descricao, ordem } = req.body;
 			const entityId = req.params.id;
 
-			const [updatedRows] = await Graduacao.update(
+			const [updatedRows] = await Entity.update(
 				{
 					sigla,
 					descricao,
@@ -91,7 +91,7 @@ class GraduacaoController {
 
 	static deleteEntity = async (req, res) => {
 		try {
-			const entity = await Graduacao.findByPk(req.params.id);
+			const entity = await Entity.findByPk(req.params.id);
 			if (entity) {
 				await entity.destroy();
 				return res.status(204).send();
