@@ -74,7 +74,8 @@ class EfetivoController {
 			const senhaHashed = await bcrypt.hash(senha, 10);
 
 			var createdQRCode = await QRCode.create({
-				nivel_acesso
+				nivel_acesso,
+				entity: 'efetivo'
 			});
 
 			const createdEntity = await Entity.create({

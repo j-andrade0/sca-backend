@@ -32,7 +32,6 @@ const RegistroAcesso = db.define(
 			},
 			allowNull: false
 		},
-
 		qrcode: {
 			type: DataTypes.INTEGER,
 			references: {
@@ -69,7 +68,6 @@ const RegistroAcesso = db.define(
 			type: DataTypes.STRING(30),
 			allowNull: true
 		},
-
 		sinc_acesso: {
 			type: DataTypes.BIGINT,
 			allowNull: true

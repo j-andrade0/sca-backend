@@ -13,6 +13,10 @@ const QRCode = db.define(
 		nivel_acesso: {
 			type: DataTypes.INTEGER,
 			allowNull: false
+		},
+		entity: {
+			type: DataTypes.ENUM('efetivo', 'visitante', 'dependente', 'veiculo'),
+			allowNull: false
 		}
 	},
 	{

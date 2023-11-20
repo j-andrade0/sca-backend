@@ -75,6 +75,11 @@ const Visitante = db.define(
 			type: DataTypes.BOOLEAN,
 			allowNull: true
 		},
+		permissionDate: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			defaultValue: DataTypes.NOW
+		},
 		sinc: {
 			type: DataTypes.BIGINT,
 			allowNull: true

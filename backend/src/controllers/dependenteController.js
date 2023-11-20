@@ -50,7 +50,8 @@ class DependenteController {
 			const { id_efetivo, nome, parentesco, nivel_acesso, ativo_dependente, sinc_dependente } = req.body;
 			
 			var createdQRCode = await QRCode.create({
-				nivel_acesso
+				nivel_acesso,
+				entity: 'dependente'
 			});
 
 			const createdEntity = await Entity.create({

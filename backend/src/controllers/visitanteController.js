@@ -69,6 +69,7 @@ class VisitanteController {
 				empresa,
 				autorizador,
 				nivel_acesso,
+				permissionDate,
 				ativo_visitante,
 				sinc
 			} = req.body;
@@ -76,7 +77,8 @@ class VisitanteController {
 			const senhaHashed = await bcrypt.hash(senha, 10);
 
 			var createdQRCode = await QRCode.create({
-				nivel_acesso
+				nivel_acesso,
+				entity: 'visitante'
 			})
 
 			const createdEntity = await Entity.create({
@@ -95,10 +97,11 @@ class VisitanteController {
 				autorizador,
 				qrcode_visitante: createdQRCode.qrcode,
 				ativo_visitante,
+				permissionDate,
 				sinc
 			});
 
-			delete createdEntity.dataValues.senha;
+			delete createdEntity.dataValues.senha; 
 
 			res.status(201).json(createdEntity);
 		} catch (error) {
