@@ -12,7 +12,8 @@ import unidades from './unidadeRoutes.js';
 import veiculos from './veiculoRoutes.js';
 import visitantes from './visitanteRoutes.js';
 import dependentes from './dependenteRoutes.js';
-import alerta from './alertaRoutes.js'
+import alerta from './alertaRoutes.js';
+import cartaovacina from "./cartaoVacinaRoutes.js"
 
 const routes = (app) => {
 	app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -31,6 +32,7 @@ const routes = (app) => {
 	app.use('/', visitantes);
 	app.use('/', dependentes)
 	app.use('/', alerta)
+	app.use('/', cartaovacina)
 };
 
 export default routes;

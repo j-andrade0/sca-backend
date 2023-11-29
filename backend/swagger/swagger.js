@@ -13,7 +13,8 @@ const endpointsFile = [
   '../src/routes/veiculoRoutes.js',
   '../src/routes/visitanteRoutes.js',
   '../src/routes/alertaRoutes.js',
-  '../src/routes/dependenteRoutes.js'
+  '../src/routes/dependenteRoutes.js',
+  '../src/routes/cartaoVacinaRoutes.js'
 ];
 
 const doc = {
