@@ -18,6 +18,14 @@ const Efetivo = db.define(
 			},
 			allowNull: true
 		},
+		id_posto: {
+			type: DataTypes.INTEGER,
+			references: {
+				model: 'posto',
+				key: 'id'
+			},
+			allowNull: true
+		},
 		nome_completo: {
 			type: DataTypes.STRING(50),
 			allowNull: false
@@ -25,6 +33,16 @@ const Efetivo = db.define(
 		nome_guerra: {
 			type: DataTypes.STRING(30),
 			allowNull: false
+		},
+		cpf: {
+			type: DataTypes.STRING(11),
+			allowNull: false,
+			unique: true
+		},
+		saram: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
 		},
 		foto: {
 			type: DataTypes.BLOB,
@@ -58,16 +76,13 @@ const Efetivo = db.define(
 			},
 			allowNull: false
 		},
-		email: {
-			type: DataTypes.STRING(40),
-			allowNull: false
-		},
 		senha: {
 			type: DataTypes.STRING(64),
 			allowNull: false
 		},
 		ativo_efetivo: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			allowNull: true
 		},
 		sinc_efetivo: {
 			type: DataTypes.BIGINT,
