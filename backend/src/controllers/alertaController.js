@@ -14,10 +14,6 @@ class AlertaController {
 				limit: limit
 			});
 
-			entities.forEach((entity) => {
-				delete entity.dataValues.senha;
-			});
-
 			const pagination = {
 				path: '/alertas',
 				page,

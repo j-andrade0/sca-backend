@@ -18,6 +18,11 @@ const Alerta = db.define(
 			type: DataTypes.STRING(15),
 			allowNull: false
 		},
+		data: {
+			type: DataTypes.DATE,
+			defaultValue: DataTypes.NOW,
+			allowNull: false
+		},
 		ativo_alerta: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false
