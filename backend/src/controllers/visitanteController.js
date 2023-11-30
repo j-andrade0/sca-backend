@@ -109,7 +109,7 @@ class VisitanteController {
 				createdQRCode.destroy();
 				res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				createdQRCode.destroy();
+				if(createdQRCode) createdQRCode.destroy();
 				res.status(500).send({ message: `${error.message}` });
 			}
 		}
