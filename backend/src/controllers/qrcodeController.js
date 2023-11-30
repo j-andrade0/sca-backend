@@ -1,4 +1,8 @@
 import Entity from '../models/QRCode.js';
+import Visitante from '../models/Visitante.js';
+import Depentende from '../models/Dependente.js';
+import Veiculo from '../models/Veiculo.js';
+import Efetivo from '../models/Efetivo.js';
 
 class QRCodeController {
 	static getAllEntities = async (req, res) => {
@@ -28,13 +32,13 @@ class QRCodeController {
 		}
 	};
 
-
 	static getEntityByQRCode = async (req, res) => {
 		const { qrcode } = req.params;
 		try {
 			const entity = await Entity.findByPk(qrcode);
 			if (entity) {
-				return res.status(200).json(entity);
+				const fullEntity = await this._getEntity(entity);
+				return res.status(200).json(fullEntity);
 			} else {
 				return res.status(400).send({
 					message: `QRCode ${qrcode} not found!`
@@ -66,7 +70,7 @@ class QRCodeController {
 	static updateEntity = async (req, res) => {
 		const { qrcode } = req.params;
 		try {
-			const { nivel_acesso, entity} = req.body;
+			const { nivel_acesso, entity } = req.body;
 
 			const [updatedRows] = await Entity.update(
 				{
@@ -102,6 +106,30 @@ class QRCodeController {
 			}
 		} catch (error) {
 			return res.status(500).send({ message: `${error.message}` });
+		}
+	};
+
+	static _getEntity = async (qrcode) => {
+		if (qrcode.entity === 'efetivo') {
+			const efetivo = await Efetivo.findOne({ where: { qrcode_efetivo: qrcode.qrcode } });
+			qrcode.dataValues.efetivo = efetivo.dataValues;
+
+			return qrcode;
+		} else if (qrcode.entity === 'visitante') {
+			const visitante = await Visitante.findOne({ where: { qrcode_visitante: qrcode.qrcode } });
+			qrcode.dataValues.visitante = visitante.dataValues;
+
+			return qrcode;
+		} else if (qrcode.entity === 'dependente') {
+			const dependente = await Depentende.findOne({ where: { qrcode: qrcode.qrcode } });
+			qrcode.dataValues.dependente = dependente.dataValues;
+
+			return qrcode;
+		} else if (qrcode.entity === 'veiculo') {
+			const veiculo = await Veiculo.findOne({ where: { qrcode: qrcode.qrcode } });
+			qrcode.dataValues.veiculo = veiculo.dataValues;
+
+			return qrcode;
 		}
 	};
 }
