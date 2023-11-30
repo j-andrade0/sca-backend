@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/dbConnect.js';
-import Usuario from './Usuario.js';
+import Efetivo from './Efetivo.js';
 
 const CartaoVacina = db.define(
 	'CartaoVacina',
@@ -10,8 +10,8 @@ const CartaoVacina = db.define(
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true
-        },
-        usuarioId: {
+		},
+		efetivoId: {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
@@ -31,7 +31,7 @@ const CartaoVacina = db.define(
 			type: DataTypes.DATEONLY,
 			allowNull: false
 		},
-        data_validade: {
+		data_validade: {
 			type: DataTypes.DATEONLY,
 			allowNull: true
 		}
@@ -41,10 +41,9 @@ const CartaoVacina = db.define(
 	}
 );
 
-CartaoVacina.belongsTo(Usuario, {
-  foreignKey: 'usuarioId',
-  as: 'usuario'
+CartaoVacina.belongsTo(Efetivo, {
+	foreignKey: 'efetivoId',
+	as: 'efetivo'
 });
-
 
 export default CartaoVacina;
