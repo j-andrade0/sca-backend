@@ -81,8 +81,8 @@ class EfetivoController {
 			});
 
 			var createdAlerta = await Alerta.create({
-				nome_alerta: "criação",
-				cor: "verde",
+				nome_alerta: 'criação',
+				cor: 'verde',
 				ativo_alerta: true
 			});
 
@@ -108,14 +108,14 @@ class EfetivoController {
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-				if(createdQRCode) createdQRCode.destroy();
-				if(createdAlerta) createdAlerta.destroy();
+				if (createdQRCode) createdQRCode.destroy();
+				if (createdAlerta) createdAlerta.destroy();
 
 				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				if(createdQRCode) createdQRCode.destroy();
-				if(createdAlerta) createdAlerta.destroy();
-				
+				if (createdQRCode) createdQRCode.destroy();
+				if (createdAlerta) createdAlerta.destroy();
+
 				return res.status(500).send({ message: `${error.message}` });
 			}
 		}
@@ -143,8 +143,11 @@ class EfetivoController {
 			const [updatedRows] = await Entity.update(
 				{
 					id_graduacao,
+					id_posto,
 					nome_completo,
 					nome_guerra,
+					cpf,
+					saram,
 					foto,
 					dependente,
 					id_alerta,
@@ -170,9 +173,9 @@ class EfetivoController {
 	};
 
 	static login = async (req, res) => {
-		const { email, senha } = req.body;
+		const { cpf, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { email } });
+			const entity = await Entity.findOne({ where: { cpf } });
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 
