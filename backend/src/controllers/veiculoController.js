@@ -82,10 +82,10 @@ class VeiculoController {
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
                 console.log(createdQRCode)
-				createdQRCode.destroy();
+				if(createdQRCode) createdQRCode.destroy();
 				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				createdQRCode.destroy();
+				if(createdQRCode) createdQRCode.destroy();
 				return res.status(500).send({ message: `${error.message}` });
 			}
 		}

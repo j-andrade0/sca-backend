@@ -12,7 +12,7 @@ const RegistroAcesso = db.define(
 		},
 		tipo: {
 			type: DataTypes.STRING(20),
-			allowNull: false
+			allowNull: true
 		},
 		data: {
 			type: DataTypes.DATEONLY,
@@ -30,7 +30,7 @@ const RegistroAcesso = db.define(
 				model: 'posto',
 				key: 'id'
 			},
-			allowNull: false
+			allowNull: true
 		},
 		qrcode: {
 			type: DataTypes.INTEGER,
@@ -38,7 +38,15 @@ const RegistroAcesso = db.define(
 				model: 'qrcode',
 				key: 'qrcode'
 			},
-			allowNull: false
+			allowNull: true
+		},
+		id_efetivo: {
+			type: DataTypes.INTEGER,
+			references: {
+				model: 'efetivo',
+				key: 'id'
+			},
+			allowNull: true
 		},
 		id_visitante: {
 			type: DataTypes.INTEGER,

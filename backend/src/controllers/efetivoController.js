@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 import jwt from 'jsonwebtoken';
 import QRCode from '../models/QRCode.js';
+import Alerta from '../models/Alerta.js';
 
 class EfetivoController {
 	static getAllEntities = async (req, res) => {
@@ -58,13 +59,14 @@ class EfetivoController {
 		try {
 			const {
 				id_graduacao,
+				id_posto,
 				nome_completo,
 				nome_guerra,
+				cpf,
+				saram,
 				foto,
 				dependente,
-				id_alerta,
 				id_unidade,
-				email,
 				senha,
 				nivel_acesso,
 				ativo_efetivo,
@@ -78,16 +80,24 @@ class EfetivoController {
 				entity: 'efetivo'
 			});
 
+			var createdAlerta = await Alerta.create({
+				nome_alerta: 'criação',
+				cor: 'verde',
+				ativo_alerta: true
+			});
+
 			const createdEntity = await Entity.create({
 				id_graduacao,
+				id_posto,
 				nome_completo,
 				nome_guerra,
+				cpf,
+				saram,
 				foto,
 				dependente,
-				id_alerta,
+				id_alerta: createdAlerta.id,
 				id_unidade,
 				qrcode_efetivo: createdQRCode.qrcode,
-				email,
 				senha: senhaHashed,
 				ativo_efetivo,
 				sinc_efetivo
@@ -98,10 +108,14 @@ class EfetivoController {
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-				createdQRCode.destroy();
+				if (createdQRCode) createdQRCode.destroy();
+				if (createdAlerta) createdAlerta.destroy();
+
 				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				createdQRCode.destroy();
+				if (createdQRCode) createdQRCode.destroy();
+				if (createdAlerta) createdAlerta.destroy();
+
 				return res.status(500).send({ message: `${error.message}` });
 			}
 		}
@@ -111,14 +125,16 @@ class EfetivoController {
 		try {
 			const {
 				id_graduacao,
+				id_posto,
 				nome_completo,
 				nome_guerra,
+				cpf,
+				saram,
 				foto,
 				dependente,
 				id_alerta,
 				id_unidade,
 				qrcode_efetivo,
-				email,
 				ativo_efetivo,
 				sinc_efetivo
 			} = req.body;
@@ -127,8 +143,11 @@ class EfetivoController {
 			const [updatedRows] = await Entity.update(
 				{
 					id_graduacao,
+					id_posto,
 					nome_completo,
 					nome_guerra,
+					cpf,
+					saram,
 					foto,
 					dependente,
 					id_alerta,
@@ -154,9 +173,9 @@ class EfetivoController {
 	};
 
 	static login = async (req, res) => {
-		const { email, senha } = req.body;
+		const { cpf, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { email } });
+			const entity = await Entity.findOne({ where: { cpf } });
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 

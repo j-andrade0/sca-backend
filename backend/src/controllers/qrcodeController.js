@@ -47,10 +47,11 @@ class QRCodeController {
 
 	static createEntity = async (req, res) => {
 		try {
-			const { nivel_acesso } = req.body;
+			const { nivel_acesso, entity } = req.body;
 
 			const createdEntity = await Entity.create({
-				nivel_acesso
+				nivel_acesso,
+				entity
 			});
 			res.status(201).json(createdEntity);
 		} catch (error) {
@@ -65,11 +66,12 @@ class QRCodeController {
 	static updateEntity = async (req, res) => {
 		const { qrcode } = req.params;
 		try {
-			const { nivel_acesso } = req.body;
+			const { nivel_acesso, entity} = req.body;
 
 			const [updatedRows] = await Entity.update(
 				{
-					nivel_acesso
+					nivel_acesso,
+					entity
 				},
 				{ where: { qrcode } }
 			);
