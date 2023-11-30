@@ -1,8 +1,8 @@
 import express from 'express';
 import db from './config/dbConnect.js';
 import routes from './routes/index.js';
-import corsOptions from './config/corsConfig.js';
-import cors from 'cors'
+import cors from 'cors';
+import seed from './seeds/index.js';
 
 try {
 	await db.sync(); // await db.sync({ force: true }); to reset database everytime, and await db.sync(); to keep the records
@@ -13,8 +13,16 @@ try {
 
 const app = express();
 
-app.use(cors(corsOptions))
+cors(app);
 app.use(express.json());
+
+seed()
+	.then(() => {
+		console.log('Seeds feitas com sucesso');
+	})
+	.catch((error) => {
+		console.error('Erro ao fazer seeds: ', error);
+	});
 
 routes(app);
 
