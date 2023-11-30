@@ -52,7 +52,7 @@ const Veiculo = db.define(
 				model: 'qrcode',
 				key: 'qrcode'
 			},
-			allowNull: true
+			allowNull: false
 		},
 		ativo_veiculo: {
 			type: DataTypes.BOOLEAN,

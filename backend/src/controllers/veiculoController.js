@@ -54,7 +54,6 @@ class VeiculoController {
 				placa,
 				modelo,
 				renavam,
-				qrcode,
                 nivel_acesso,
 				ativo_veiculo,
 				sinc_veiculo
@@ -73,7 +72,7 @@ class VeiculoController {
 				placa,
 				modelo,
 				renavam,
-				qrcode,
+				qrcode: createdQRCode.qrcode,
 				ativo_veiculo,
 				sinc_veiculo
 			});
