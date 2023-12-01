@@ -13,7 +13,7 @@ try {
 
 const app = express();
 
-cors(app);
+app.use(cors());
 app.use(express.json());
 
 seed()
