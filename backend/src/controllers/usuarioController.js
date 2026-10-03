@@ -82,14 +82,15 @@ class UserController {
 	static updateEntity = async (req, res) => {
 		try {
 			const { usuario, senha, nivel_acesso, flag } = req.body;
-			const senhaHashed = await bcrypt.hash(senha, 10);
+			// The password is only changed when one is sent (undefined values are skipped by Sequelize).
+			const senhaHashed = senha ? await bcrypt.hash(senha, 10) : undefined;
 
 			const entityId = req.params.id;
 
 			const [updatedRows] = await Entity.update(
 				{
 					usuario,
-					senhaHashed,
+					senha: senhaHashed,
 					nivel_acesso,
 					flag
 				},
