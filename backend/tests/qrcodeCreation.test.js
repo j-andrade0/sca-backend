@@ -35,7 +35,7 @@ describe('creating an efetivo', () => {
 		expect(res.body.efetivo.id).toBe(created.body.id);
 	});
 
-	it('does not leave an orphan QR Code or alert behind when the creation fails (duplicate cpf)', async () => {
+	it('removes the QR Code and the alert when the creation does not complete (duplicate cpf)', async () => {
 		const { created } = await loginEfetivo(admin.token, 1);
 		const before = { qrcodes: await QRCode.count(), alertas: await Alerta.count() };
 

@@ -23,7 +23,7 @@ describe('CORS on the API (CORS_ORIGIN=http://allowed.example)', () => {
 		({ default: app } = await import('../src/app.js'));
 	});
 
-	it('allows the configured origin (app.js used to call cors(app), which enables nothing)', async () => {
+	it('allows the configured origin', async () => {
 		const res = await request(app).get('/doc/').set('Origin', 'http://allowed.example');
 		expect(res.headers['access-control-allow-origin']).toBe('http://allowed.example');
 	});

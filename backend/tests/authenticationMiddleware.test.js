@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import authenticate from '../src/middlewares/authenticationMiddleware.js';
 
 describe('authenticationMiddleware', () => {
-	it('answers 401 instead of hanging when verification fails unexpectedly', () => {
+	it('returns 401 when verification fails with an unexpected error', () => {
 		const secret = process.env.JWT_SECRET_KEY;
 		delete process.env.JWT_SECRET_KEY; // jwt.verify then throws a plain Error, not a JsonWebTokenError
 		try {

@@ -9,7 +9,7 @@ beforeAll(async () => {
 });
 
 describe('PUT /efetivo/:id', () => {
-	it('updates the efetivo (it used to throw a ReferenceError on every PUT)', async () => {
+	it('updates the efetivo columns sent in the body', async () => {
 		const { created } = await loginEfetivo(admin.token, 1);
 		expect(created.status).toBe(201);
 		const id = created.body.id;

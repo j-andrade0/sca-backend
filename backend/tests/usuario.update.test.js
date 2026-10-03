@@ -16,7 +16,7 @@ describe('PUT /usuario/:id', () => {
 		return { usuario, id: row.id };
 	};
 
-	it('updates the password when one is sent (the key sent to the database was not a column)', async () => {
+	it('updates the password when one is sent', async () => {
 		const { usuario, id } = await makeUsuario();
 		const res = await api().put(`/usuario/${id}`).set(AUTH, admin.token).send({ senha: 'a-new-password-1' });
 		expect(res.status).toBe(200);
