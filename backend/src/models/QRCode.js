@@ -6,7 +6,7 @@ const QRCode = db.define(
 	{
 		qrcode: {
 			type: DataTypes.INTEGER,
-            autoIncrement: true,
+			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true
 		},
