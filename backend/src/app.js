@@ -2,6 +2,7 @@ import express from 'express';
 import db from './config/dbConnect.js';
 import routes from './routes/index.js';
 import cors from 'cors';
+import { buildCorsOptions } from './config/corsConfig.js';
 import seed from './seeds/index.js';
 
 try {
@@ -13,7 +14,7 @@ try {
 
 const app = express();
 
-cors(app);
+app.use(cors(buildCorsOptions()));
 app.use(express.json());
 
 seed()

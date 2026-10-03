@@ -3,33 +3,25 @@ import bcrypt from 'bcrypt';
 import { signAccessToken } from '../util/token.js';
 import verifyPassword from '../util/verifyPassword.js';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
+import { buildPagination, paginationParams } from '../util/pagination.js';
 
 class UserController {
 	static getAllEntities = async (req, res) => {
-		const { page = 1 } = req.query;
-		const limit = 10;
-		let lastPage = 1;
-		const countEntity = await Entity.count();
+		const { page, limit, offset } = paginationParams(req.query);
 
 		try {
+			const countEntity = await Entity.count();
 			const entities = await Entity.findAll({
 				order: [['id', 'ASC']],
-				offset: Number(page * limit - limit),
-				limit: limit
+				offset,
+				limit
 			});
 
 			entities.forEach((entity) => {
 				delete entity.dataValues.senha;
 			});
 
-			const pagination = {
-				path: '/usuario',
-				page,
-				prev_page: page - 1 >= 1 ? page - 1 : false,
-				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
-				lastPage,
-				totalRegisters: countEntity
-			};
+			const pagination = buildPagination({ path: '/usuario', page, limit, total: countEntity });
 			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
@@ -82,14 +74,15 @@ class UserController {
 	static updateEntity = async (req, res) => {
 		try {
 			const { usuario, senha, nivel_acesso, flag } = req.body;
-			const senhaHashed = await bcrypt.hash(senha, 10);
+			// The password is only changed when one is sent (undefined values are skipped by Sequelize).
+			const senhaHashed = senha ? await bcrypt.hash(senha, 10) : undefined;
 
 			const entityId = req.params.id;
 
 			const [updatedRows] = await Entity.update(
 				{
 					usuario,
-					senhaHashed,
+					senha: senhaHashed,
 					nivel_acesso,
 					flag
 				},

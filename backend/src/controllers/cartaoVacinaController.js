@@ -1,18 +1,17 @@
 import CartaoVacina from '../models/CartaoVacina.js';
 import Efetivo from '../models/Efetivo.js';
+import { buildPagination, paginationParams } from '../util/pagination.js';
 
 class CartaoVacinaController {
 	static getAllEntities = async (req, res) => {
-		const { page = 1 } = req.query;
-		const limit = 10;
-		let lastPage = 1;
-		const countEntity = await CartaoVacina.count();
+		const { page, limit, offset } = paginationParams(req.query);
 
 		try {
+			const countEntity = await CartaoVacina.count();
 			const entities = await CartaoVacina.findAll({
 				order: [['id', 'ASC']],
-				offset: Number(page * limit - limit),
-				limit: limit,
+				offset,
+				limit,
 				include: [
 					{
 						model: Efetivo,
@@ -21,14 +20,7 @@ class CartaoVacinaController {
 				]
 			});
 
-			const pagination = {
-				path: '/cartoesvacina',
-				page,
-				prev_page: page - 1 >= 1 ? page - 1 : false,
-				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
-				lastPage,
-				totalRegisters: countEntity
-			};
+			const pagination = buildPagination({ path: '/cartoesvacina', page, limit, total: countEntity });
 			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
