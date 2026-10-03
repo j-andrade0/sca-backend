@@ -94,7 +94,10 @@ describe('authorization (403) uses the level signed inside the JWT', () => {
 		expect((await api().get('/unidade').set(AUTH, low.token).set('access-level', '99')).status).toBe(403);
 
 		const high = await loginVisitante(admin.token, 2);
-		expect(jwt.verify(high.token, process.env.JWT_SECRET_KEY)).toMatchObject({ tipo: 'visitante', nivel_acesso: 2 });
+		expect(jwt.verify(high.token, process.env.JWT_SECRET_KEY)).toMatchObject({
+			tipo: 'visitante',
+			nivel_acesso: 2
+		});
 		expect((await api().get('/unidade').set(AUTH, high.token)).status).toBe(200);
 	});
 
