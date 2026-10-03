@@ -166,7 +166,7 @@ class EfetivoController {
 	static login = async (req, res) => {
 		const { cpf, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { cpf } });
+			const entity = await Entity.unscoped().findOne({ where: { cpf } }); // unscoped: needs the password hash
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 

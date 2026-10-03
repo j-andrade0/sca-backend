@@ -90,7 +90,10 @@ const Efetivo = db.define(
 		}
 	},
 	{
-		tableName: 'efetivo'
+		tableName: 'efetivo',
+		// The password hash is never selected by default (lists, lookups, associations and QR code resolution).
+		// The login uses `Model.unscoped()` to read it.
+		defaultScope: { attributes: { exclude: ['senha'] } }
 	}
 );
 
