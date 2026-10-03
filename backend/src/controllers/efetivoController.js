@@ -2,7 +2,7 @@ import Entity from '../models/Efetivo.js';
 import verifyPassword from '../util/verifyPassword.js';
 import bcrypt from 'bcrypt';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
-import jwt from 'jsonwebtoken';
+import { signAccessToken } from '../util/token.js';
 import QRCode from '../models/QRCode.js';
 import Alerta from '../models/Alerta.js';
 
@@ -183,7 +183,13 @@ class EfetivoController {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
 			}
 
-			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+			// Efetivo has no level of its own: it is the one stored on its QRCode (set when the efetivo is created).
+			const qrcode = await QRCode.findByPk(entity.qrcode_efetivo);
+			const jwtToken = signAccessToken({
+				id: entity.id,
+				tipo: 'efetivo',
+				nivel_acesso: qrcode?.nivel_acesso ?? 0
+			});
 			delete entity.dataValues.senha;
 
 			return res.status(200).send({ jwtToken, entity });

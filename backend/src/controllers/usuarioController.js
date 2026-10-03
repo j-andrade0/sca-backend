@@ -1,6 +1,6 @@
 import Entity from '../models/Usuario.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { signAccessToken } from '../util/token.js';
 import verifyPassword from '../util/verifyPassword.js';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 
@@ -119,7 +119,7 @@ class UserController {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
 			}
 
-			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+			const jwtToken = signAccessToken({ id: entity.id, tipo: 'usuario', nivel_acesso: entity.nivel_acesso });
 
 			delete entity.dataValues.senha;
 
