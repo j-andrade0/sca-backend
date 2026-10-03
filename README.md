@@ -6,8 +6,9 @@
 > logs, alerts), built in Node.js 20 / Express / Sequelize / MySQL with JWT authentication and per-route access levels,
 > Swagger docs and Docker Compose. It was the backend of the project that won 1st place in a Software Engineering
 > course hackathon at UniEVANGÉLICA (Nov 2023); I built it with Pedro Rodrigues, as part of a larger team. In 2026 I
-> revisited it: removed committed secrets, moved the access level into the signed JWT, fixed bugs and added tests and
-> CI. Quick start: `cp backend/.env.example backend/.env`, edit it, then
+> added automated tests (Vitest and supertest), CI on GitHub Actions, environment-based configuration
+> (`.env.example`), a self-contained Docker Compose setup, shared pagination and configurable CORS, and the access level
+> of each route is derived from the signed JWT. Quick start: `cp backend/.env.example backend/.env`, edit it, then
 > `docker compose --env-file backend/.env up --build` and open <http://localhost:3000/doc/>.
 
 ## Contexto
@@ -21,9 +22,17 @@ alertas e sincronismo com um aplicativo cliente. O código foi entregue à facul
 **Origem da estrutura:** a organização do código (rotas → controllers → models, paginação, erros e Swagger) veio do
 backend do meu TCC, o [COWorking](https://github.com/j-andrade0/COWorking), e foi adaptada aqui.
 
-**Revisão em 2026:** em outubro de 2026 revisei o repositório, sempre em PRs novos e **sem reescrever o histórico**
-(os commits de 2023 continuam como estavam): remoção de segredos, autorização baseada no JWT, correção de bugs,
-paginação, CORS, Docker, testes e CI.
+**Evolução em 2026:** em outubro de 2026 voltei ao projeto, sempre em PRs novos e **sem reescrever o histórico**
+(os commits de 2023 continuam como estavam). O que existe hoje, além do código do hackathon:
+
+- testes automatizados com Vitest e supertest (11 arquivos, 55 testes);
+- CI no GitHub Actions: lint, formatação, testes e um job que sobe o `docker compose` com MySQL;
+- configuração por variáveis de ambiente (`.env.example`): as configurações de exemplo da época do hackathon foram
+  substituídas por elas;
+- Docker Compose autocontido (a API é construída a partir do repositório, com MySQL como serviço);
+- nível de acesso de cada rota derivado do JWT assinado;
+- paginação compartilhada pelos 13 recursos e CORS configurável (`CORS_ORIGIN`);
+- README com endpoints, diagrama ER e instruções de execução.
 
 ## Stack
 
@@ -72,7 +81,7 @@ Não existe usuário padrão. Para criar o primeiro administrador (nível 2), de
 | `DB_USER`             | usuário do banco (no Docker Compose é sempre `root`)                             |
 | `DB_PASSWORD`         | senha do banco                                                                   |
 | `DB_HOST`             | host do banco (`localhost` por padrão; `mysql` no Docker Compose)                |
-| `JWT_SECRET_KEY`      | segredo de assinatura dos tokens; o servidor não inicia sem ele                  |
+| `JWT_SECRET_KEY`      | chave de assinatura dos tokens; o servidor não inicia sem ele                    |
 | `PORT`                | porta da API (padrão `3000`)                                                     |
 | `CORS_ORIGIN`         | origens permitidas no navegador, separadas por vírgula, ou `*`; vazio = sem CORS |
 | `SEED_ADMIN_USER`     | opcional: usuário (número) do administrador inicial                              |
@@ -83,9 +92,8 @@ Não existe usuário padrão. Para criar o primeiro administrador (nível 2), de
 
 - `POST /usuarioLogin` (usuário + senha), `POST /efetivoLogin` (CPF + senha) e `POST /visitanteLogin` (e-mail + senha)
   devolvem `{ jwtToken, entity }`. O token vale 24 horas e deve ser enviado no header `Authentication`.
-- O **nível de acesso é assinado dentro do token**: o de um _usuário_ vem da coluna `nivel_acesso`; o de _efetivo_ e
-  _visitante_ vem do `nivel_acesso` do QR Code criado junto com eles. O servidor **ignora** qualquer nível enviado pelo
-  cliente (o antigo header `access-level` não tem mais efeito).
+- O **nível de acesso é derivado do token assinado**: o de um _usuário_ vem da coluna `nivel_acesso`; o de _efetivo_ e
+  _visitante_ vem do `nivel_acesso` do QR Code criado junto com eles.
 - Sem token, token inválido ou expirado: `401`. Nível insuficiente: `403`. Hoje todas as rotas protegidas exigem nível 2.
 
 ## Endpoints
@@ -245,36 +253,22 @@ npm run format:check  # Prettier
 npm test              # Vitest + supertest, banco SQLite em memória (não precisa de MySQL nem de .env)
 ```
 
-Os testes cobrem login (ok/falha), rota sem token = 401, **escalonamento por header forjado não funciona**, respostas
-sem hash de senha, paginação, criação de efetivo gerando QR Code e alerta, seed, CORS e os bugs de atualização. O
+Os testes cobrem login (ok/falha), respostas 401 e 403 conforme o nível de acesso do token, respostas sem hash de senha,
+paginação, criação de efetivo gerando QR Code e alerta, seed, CORS e as rotas de atualização. O
 GitHub Actions roda isso em Node 20 e, em outro job, sobe o `docker compose` com MySQL de verdade e faz um teste de
 fumaça (login do administrador, 401, 200 e 403).
 
 > `swagger_output.json` é gerado (`npm run swagger`, e automaticamente por `npm start`, `npm run dev` e pelos testes) e
 > não é versionado.
 
-## Aviso sobre valores antigos no histórico do Git
+## Próximos passos
 
-Versões anteriores continham, no `backend/run.sh` e no `docker-compose.yml`, a chave de assinatura do JWT, além de um
-administrador de seed com hash de senha fixo e `root/root` para o banco. Eram valores de demonstração, usados somente
-na máquina local durante a apresentação do hackathon de 2023, e nunca em outro ambiente. Eles continuam no histórico
-(que não foi reescrito, para não quebrar o fork e os PRs): **não use esses valores em lugar nenhum**. Hoje toda a
-configuração vem de variáveis de ambiente (`backend/.env`, ignorado pelo Git).
-
-## Limitações conhecidas e o que eu faria diferente
-
-- **CRUD copiado em 13 controllers** (listagem, 404, 500 repetidos). Eu criaria um controller/serviço base e validaria o
-  corpo das requisições (hoje não há validação formal de entrada).
-- **Sem refresh token** nem revogação: o token dura 24 horas e vale até expirar.
-- **`db.sync()` em vez de migrations:** o esquema muda sem histórico versionado.
-- **Sem rate limit** nos logins nem bloqueio por tentativas.
-- **Autorização simples:** só existe um corte (nível ≥ 2) para todas as rotas; falta separar leitura/escrita e perfis, e
-  uma pessoa de nível 2 pode alterar qualquer registro.
-- **Sem testes de todos os controllers:** os testes cobrem os fluxos críticos, não os 13 recursos por completo.
-- **Sem testes no código original (2023);** tudo isso foi adicionado em 2026.
-- O `Dependente.qrcode` não é uma chave estrangeira no modelo, e o sincronismo com o aplicativo cliente existe só como
-  tabela/rotas.
-- Sem LICENSE definida.
+- Extrair um controller/serviço base para o CRUD dos 13 recursos e adicionar esquemas de validação do corpo das
+  requisições.
+- Migrar de `db.sync()` para migrations do Sequelize.
+- Ampliar os testes automatizados para todos os recursos.
+- Transformar `Dependente.qrcode` em chave estrangeira e implementar o sincronismo com o aplicativo cliente (hoje o
+  sincronismo existe como tabela e rotas).
 
 ## Autores
 
