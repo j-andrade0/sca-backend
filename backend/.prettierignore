@@ -1,0 +1,4 @@
+node_modules
+swagger/swagger_output.json
+package-lock.json
+coverage
