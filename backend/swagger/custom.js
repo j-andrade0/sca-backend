@@ -2,15 +2,10 @@ window.onload = function () {
 	const authButton = document.createElement('button');
 	authButton.innerHTML = 'Authorize';
 	authButton.onclick = function () {
-		const token = prompt('Enter your API key:');
-		const accessLevel = prompt('Enter your access level:');
+		const token = prompt('Enter your JWT (the jwtToken returned by the login endpoints):');
 
-		if (token && accessLevel) {
-			const authHeader = token;
-			const accessLevelHeader = accessLevel;
-
-			window.ui.preauthorizeApiKey('authentication', authHeader);
-			window.ui.preauthorizeApiKey('access-level', accessLevelHeader);
+		if (token) {
+			window.ui.preauthorizeApiKey('apiKey', token);
 		}
 	};
 
