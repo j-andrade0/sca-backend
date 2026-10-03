@@ -4,7 +4,7 @@ import { api, loginAdmin, loginUsuario, loginEfetivo, loginVisitante, PASSWORD }
 const AUTH = 'Authentication';
 
 // True when the JSON contains a `senha` key or a bcrypt hash anywhere.
-const leaksPassword = (value) => JSON.stringify(value).match(/"senha"|\$2[aby]\$/) !== null;
+const containsPasswordHash = (value) => JSON.stringify(value).match(/"senha"|\$2[aby]\$/) !== null;
 
 let admin;
 let efetivo; // { id, qrcode }
@@ -34,7 +34,7 @@ beforeAll(async () => {
 	efetivo.cartaoId = vacina.body.id;
 });
 
-describe('no endpoint returns a password hash', () => {
+describe('responses omit the password hash', () => {
 	it.each([
 		['GET /usuario', () => api().get('/usuario').set(AUTH, admin.token)],
 		['GET /usuario/:id', () => api().get(`/usuario/${usuarioId}`).set(AUTH, admin.token)],
@@ -49,13 +49,13 @@ describe('no endpoint returns a password hash', () => {
 	])('%s', async (_name, call) => {
 		const res = await call();
 		expect(res.status).toBe(200);
-		expect(leaksPassword(res.body)).toBe(false);
+		expect(containsPasswordHash(res.body)).toBe(false);
 	});
 
-	it('the login responses do not contain the hash either, but the passwords still work', async () => {
+	it('the login response omits the hash and the password still works', async () => {
 		const { usuario } = await loginUsuario(1);
 		const res = await api().post('/usuarioLogin').send({ usuario, senha: PASSWORD });
 		expect(res.status).toBe(200);
-		expect(leaksPassword(res.body.entity)).toBe(false);
+		expect(containsPasswordHash(res.body.entity)).toBe(false);
 	});
 });
