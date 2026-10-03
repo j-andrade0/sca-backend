@@ -161,12 +161,12 @@ class VisitanteController {
 				foto,
 				empresa,
 				autorizador,
-				qr_code,
 				ativo_visitante,
 				sinc
 			} = req.body;
 
-			const senhaHashed = await bcrypt.hash(senha, 10);
+			// The password is only changed when one is sent (undefined values are skipped by Sequelize).
+			const senhaHashed = senha ? await bcrypt.hash(senha, 10) : undefined;
 
 			const [updatedRows] = await Entity.update(
 				{
@@ -183,7 +183,6 @@ class VisitanteController {
 					foto,
 					empresa,
 					autorizador,
-					qr_code,
 					ativo_visitante,
 					sinc
 				},
