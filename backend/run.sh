@@ -1,10 +1,15 @@
 #!/bin/bash
+# Development runner: loads backend/.env, generates the Swagger file and starts the API with nodemon.
+cd "$(dirname "$0")" || exit 1
 
-export DB_NAME=sca
-export DB_USER=root
-export DB_PASSWORD=root
-export JWT_SECRET_KEY="Xn1%tJ6O3K4%^6#rOr3npJ5cmel^48H11o7NnGy5SxY!8nUkzh!ZIOvl0^5J6#ZhQv6$GibovDYBAC@4gmSKg%&&hzQW!NTnCRSIL4AWprRuXmWbZ$xuP6h%OSVgf0Fp"
-export PORT=3000
+if [ ! -f .env ]; then
+	echo "Missing backend/.env. Run: cp .env.example .env (and edit it)" >&2
+	exit 1
+fi
+
+set -a
+. ./.env
+set +a
 
 node ./swagger/swagger.js
 npx nodemon ./src/server.js
