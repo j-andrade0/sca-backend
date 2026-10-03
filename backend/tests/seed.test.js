@@ -46,7 +46,7 @@ describe('admin seed', () => {
 		process.env.SEED_ADMIN_PASSWORD = 'a-test-only-password';
 		await usuarioSeed();
 
-		const admin = await Usuario.findOne({ where: { usuario: 4242 } });
+		const admin = await Usuario.unscoped().findOne({ where: { usuario: 4242 } });
 		expect(admin.nivel_acesso).toBe(2);
 		expect(admin.senha).not.toBe('a-test-only-password');
 		expect(await bcrypt.compare('a-test-only-password', admin.senha)).toBe(true);
@@ -60,7 +60,7 @@ describe('admin seed', () => {
 		process.env.SEED_ADMIN_PASSWORD = 'another-password';
 		await usuarioSeed();
 		expect(await Usuario.count({ where: { usuario: 4242 } })).toBe(1);
-		const admin = await Usuario.findOne({ where: { usuario: 4242 } });
+		const admin = await Usuario.unscoped().findOne({ where: { usuario: 4242 } });
 		expect(await bcrypt.compare('another-password', admin.senha)).toBe(false);
 	});
 });

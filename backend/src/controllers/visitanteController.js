@@ -110,7 +110,7 @@ class VisitanteController {
 	static login = async (req, res) => {
 		const { email, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { email } });
+			const entity = await Entity.unscoped().findOne({ where: { email } }); // unscoped: needs the password hash
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 
