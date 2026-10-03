@@ -153,7 +153,6 @@ class EfetivoController {
 					id_alerta,
 					id_unidade,
 					qrcode_efetivo,
-					email,
 					ativo_efetivo,
 					sinc_efetivo
 				},
