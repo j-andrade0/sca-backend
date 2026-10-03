@@ -32,7 +32,8 @@ const doc = {
 			type: 'apiKey',
 			name: 'Authentication',
 			in: 'header',
-			description: 'JWT returned by the login endpoints. The access level is read from the token, never from a header.'
+			description:
+				'JWT returned by the login endpoints. The access level is read from the token, never from a header.'
 		}
 	},
 	security: [{ apiKey: [] }]

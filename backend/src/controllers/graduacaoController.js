@@ -20,7 +20,6 @@ class GraduacaoController {
 		}
 	};
 
-
 	static getEntityById = async (req, res) => {
 		try {
 			const entity = await Entity.findByPk(req.params.id);

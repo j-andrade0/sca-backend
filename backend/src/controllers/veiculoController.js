@@ -46,12 +46,12 @@ class VeiculoController {
 				placa,
 				modelo,
 				renavam,
-                nivel_acesso,
+				nivel_acesso,
 				ativo_veiculo,
 				sinc_veiculo
 			} = req.body;
 
-            var createdQRCode = await QRCode.create({
+			var createdQRCode = await QRCode.create({
 				nivel_acesso,
 				entity: 'veiculo'
 			});
@@ -72,11 +72,11 @@ class VeiculoController {
 			return res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-                console.log(createdQRCode)
-				if(createdQRCode) createdQRCode.destroy();
+				console.log(createdQRCode);
+				if (createdQRCode) createdQRCode.destroy();
 				return res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				if(createdQRCode) createdQRCode.destroy();
+				if (createdQRCode) createdQRCode.destroy();
 				return res.status(500).send({ message: `${error.message}` });
 			}
 		}

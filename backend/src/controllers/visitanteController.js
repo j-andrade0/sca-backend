@@ -71,7 +71,7 @@ class VisitanteController {
 			var createdQRCode = await QRCode.create({
 				nivel_acesso,
 				entity: 'visitante'
-			})
+			});
 
 			const createdEntity = await Entity.create({
 				email,
@@ -93,15 +93,15 @@ class VisitanteController {
 				sinc
 			});
 
-			delete createdEntity.dataValues.senha; 
+			delete createdEntity.dataValues.senha;
 
 			res.status(201).json(createdEntity);
 		} catch (error) {
 			if (error.name == 'SequelizeUniqueConstraintError') {
-				if(createdQRCode) createdQRCode.destroy();
+				if (createdQRCode) createdQRCode.destroy();
 				res.status(400).send({ message: 'Valores já cadastrados!' });
 			} else {
-				if(createdQRCode) createdQRCode.destroy();
+				if (createdQRCode) createdQRCode.destroy();
 				res.status(500).send({ message: `${error.message}` });
 			}
 		}
