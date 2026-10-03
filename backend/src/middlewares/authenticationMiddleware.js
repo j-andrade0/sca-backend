@@ -16,6 +16,8 @@ function verifyJwt(req, res, next) {
 		if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
 			return res.status(401).send({ unauthorized: `${error.message}` });
 		}
+		// Anything else (e.g. a missing secret) must not leave the request hanging.
+		return res.status(401).send({ unauthorized: 'Unauthorized' });
 	}
 }
 
