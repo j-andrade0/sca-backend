@@ -3,33 +3,25 @@ import bcrypt from 'bcrypt';
 import { signAccessToken } from '../util/token.js';
 import verifyPassword from '../util/verifyPassword.js';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
+import { buildPagination, paginationParams } from '../util/pagination.js';
 
 class UserController {
 	static getAllEntities = async (req, res) => {
-		const { page = 1 } = req.query;
-		const limit = 10;
-		let lastPage = 1;
-		const countEntity = await Entity.count();
+		const { page, limit, offset } = paginationParams(req.query);
 
 		try {
+			const countEntity = await Entity.count();
 			const entities = await Entity.findAll({
 				order: [['id', 'ASC']],
-				offset: Number(page * limit - limit),
-				limit: limit
+				offset,
+				limit
 			});
 
 			entities.forEach((entity) => {
 				delete entity.dataValues.senha;
 			});
 
-			const pagination = {
-				path: '/usuario',
-				page,
-				prev_page: page - 1 >= 1 ? page - 1 : false,
-				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
-				lastPage,
-				totalRegisters: countEntity
-			};
+			const pagination = buildPagination({ path: '/usuario', page, limit, total: countEntity });
 			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });

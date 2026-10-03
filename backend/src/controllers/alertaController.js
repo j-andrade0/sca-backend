@@ -1,27 +1,19 @@
 import Entity from '../models/Alerta.js';
+import { buildPagination, paginationParams } from '../util/pagination.js';
 
 class AlertaController {
 	static getAllEntities = async (req, res) => {
-		const { page = 1 } = req.query;
-		const limit = 10;
-		let lastPage = 1;
-		const countEntity = await Entity.count();
+		const { page, limit, offset } = paginationParams(req.query);
 
 		try {
+			const countEntity = await Entity.count();
 			const entities = await Entity.findAll({
 				order: [['id', 'ASC']],
-				offset: Number(page * limit - limit),
-				limit: limit
+				offset,
+				limit
 			});
 
-			const pagination = {
-				path: '/alertas',
-				page,
-				prev_page: page - 1 >= 1 ? page - 1 : false,
-				next_page: Number(page) + Number(1) > lastPage ? false : Number(page) + Number(1),
-				lastPage,
-				totalRegisters: countEntity
-			};
+			const pagination = buildPagination({ path: '/alertas', page, limit, total: countEntity });
 			res.status(200).json({ entities, pagination });
 		} catch (error) {
 			res.status(500).send({ message: `${error.message}` });
