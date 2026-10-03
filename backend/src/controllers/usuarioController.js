@@ -104,7 +104,7 @@ class UserController {
 	static login = async (req, res) => {
 		const { usuario, senha } = req.body;
 		try {
-			const entity = await Entity.findOne({ where: { usuario } });
+			const entity = await Entity.unscoped().findOne({ where: { usuario } }); // unscoped: needs the password hash
 
 			const isPasswordValid = await verifyPassword(entity, senha);
 

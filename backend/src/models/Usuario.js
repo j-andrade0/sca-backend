@@ -29,7 +29,10 @@ const Usuario = db.define(
 		}
 	},
 	{
-		tableName: 'usuario'
+		tableName: 'usuario',
+		// The password hash is never selected by default (lists, lookups, associations and QR code resolution).
+		// The login uses `Model.unscoped()` to read it.
+		defaultScope: { attributes: { exclude: ['senha'] } }
 	}
 );
 
