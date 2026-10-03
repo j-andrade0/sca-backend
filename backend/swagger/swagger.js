@@ -31,15 +31,11 @@ const doc = {
 		apiKey: {
 			type: 'apiKey',
 			name: 'Authentication',
-			in: 'header'
-		},
-		accessLevel: {
-			type: 'apiKey',
-			name: 'access-level',
-			in: 'header'
+			in: 'header',
+			description: 'JWT returned by the login endpoints. The access level is read from the token, never from a header.'
 		}
 	},
-	security: [{ apiKey: [] }, { accessLevel: [] }]
+	security: [{ apiKey: [] }]
 };
 
 swaggerAutogen(outputFile, endpointsFile, doc);
