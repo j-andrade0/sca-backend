@@ -1,5 +1,5 @@
 // Requires authenticationMiddleware to have run first. The level comes only from the signed JWT payload
-// (req.user); the client-controlled `access-level` header is ignored.
+// (req.user); the legacy `access-level` header has no effect.
 // 401 when there is no authenticated user, 403 when the level is not enough.
 function verifyAuthorization({ nivel_acesso }) {
 	return (req, res, next) => {

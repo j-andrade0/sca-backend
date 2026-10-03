@@ -5,6 +5,6 @@ export default defineConfig({
 		include: ['tests/**/*.test.js'],
 		globalSetup: ['./tests/globalSetup.js'],
 		// Tests run against an in-memory SQLite database (see src/config/dbConnect.js).
-		env: { DB_DIALECT: 'sqlite', JWT_SECRET_KEY: 'test-secret-key', NODE_ENV: 'test' }
+		env: { DB_DIALECT: 'sqlite', JWT_SECRET_KEY: 'test-signing-key', NODE_ENV: 'test' }
 	}
 });

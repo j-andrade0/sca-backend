@@ -31,7 +31,7 @@ jobs:
       - name: Create backend/.env from the example
         run: |
           cp backend/.env.example backend/.env
-          sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=ci-password/; s/^JWT_SECRET_KEY=.*/JWT_SECRET_KEY=ci-secret-key/" backend/.env
+          sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=ci-password/; s/^JWT_SECRET_KEY=.*/JWT_SECRET_KEY=ci-signing-key/" backend/.env
           printf "SEED_ADMIN_USER=1000\nSEED_ADMIN_PASSWORD=ci-admin-password\n" >> backend/.env
       - name: Start the stack
         run: docker compose --env-file backend/.env up -d --build --wait --wait-timeout 180
@@ -45,7 +45,7 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' $B/unidade -H "Authentication: $ADMIN")" = "200"
           curl -fsS -o /dev/null -X POST $B/usuario -H "$J" -H "Authentication: $ADMIN" -d '{"usuario":2000,"senha":"pw-12345","nivel_acesso":1,"flag":true}'
           USER=$(curl -fsS -X POST $B/usuarioLogin -H "$J" -d '{"usuario":2000,"senha":"pw-12345"}' | jq -r .jwtToken)
-          # a regular user must not escalate by forging the legacy access-level header
+          # the level comes from the token, so the legacy access-level header has no effect
           test "$(curl -s -o /dev/null -w '%{http_code}' $B/unidade -H "Authentication: $USER" -H 'access-level: 99')" = "403"
       - name: Show logs on failure
         if: failure()
