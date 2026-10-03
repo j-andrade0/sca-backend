@@ -2,7 +2,7 @@ import Entity from '../models/Visitante.js';
 import verifyPassword from '../util/verifyPassword.js';
 import NoEntityError from '../util/customErrors/NoEntityError.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { signAccessToken } from '../util/token.js';
 import QRCode from '../models/QRCode.js';
 
 class VisitanteController {
@@ -126,7 +126,13 @@ class VisitanteController {
 				return res.status(401).json({ unauthorized: 'Credenciais inválidas' });
 			}
 
-			const jwtToken = jwt.sign({ id: entity.id }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+			// Visitante has no level of its own: it is the one stored on its QRCode (set when the visitante is created).
+			const qrcode = await QRCode.findByPk(entity.qrcode_visitante);
+			const jwtToken = signAccessToken({
+				id: entity.id,
+				tipo: 'visitante',
+				nivel_acesso: qrcode?.nivel_acesso ?? 0
+			});
 			delete entity.dataValues.senha;
 
 			return res.status(200).send({ jwtToken, entity });
